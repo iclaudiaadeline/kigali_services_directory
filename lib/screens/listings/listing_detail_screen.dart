@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,6 +68,33 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   Widget _buildMap() {
+    // Show placeholder on web (Google Maps Flutter doesn't work well on web)
+    if (kIsWeb) {
+      return Container(
+        height: 250,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.map, size: 64, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            Text(
+              'Map View',
+              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Lat: ${widget.listing.latitude.toStringAsFixed(4)}, Lng: ${widget.listing.longitude.toStringAsFixed(4)}',
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+            ),
+          ],
+        ),
+      );
+    }
+
     return SizedBox(
       height: 250,
       child: GoogleMap(

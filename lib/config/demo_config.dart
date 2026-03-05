@@ -1,7 +1,7 @@
 /// Demo Mode Configuration
-/// Set DEMO_MODE to true to run the app without Firebase
-/// This is useful for testing UI and navigation
-const bool DEMO_MODE = true;
+/// Set DEMO_MODE to false to use real Firebase
+/// Set to true for testing UI without Firebase
+const bool DEMO_MODE = false;
 
 /// Demo user credentials
 const String DEMO_EMAIL = 'demo@kigali.rw';
