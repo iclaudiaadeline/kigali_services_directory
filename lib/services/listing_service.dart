@@ -13,10 +13,10 @@ class ListingService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
-              .toList();
-        });
+      return snapshot.docs
+          .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
+          .toList();
+    });
   }
 
   // Get listings by user
@@ -24,13 +24,15 @@ class ListingService {
     return _firestore
         .collection(_collection)
         .where('createdBy', isEqualTo: userId)
-        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
-              .toList();
-        });
+      var listings = snapshot.docs
+          .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
+          .toList();
+      // Sort in memory instead of Firestore to avoid index requirement
+      listings.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+      return listings;
+    });
   }
 
   // Get listings by category
@@ -41,10 +43,10 @@ class ListingService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) {
-          return snapshot.docs
-              .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
-              .toList();
-        });
+      return snapshot.docs
+          .map((doc) => ListingModel.fromMap(doc.data(), doc.id))
+          .toList();
+    });
   }
 
   // Create a new listing
@@ -83,10 +85,8 @@ class ListingService {
   // Get a single listing
   Future<ListingModel?> getListing(String listingId) async {
     try {
-      DocumentSnapshot doc = await _firestore
-          .collection(_collection)
-          .doc(listingId)
-          .get();
+      DocumentSnapshot doc =
+          await _firestore.collection(_collection).doc(listingId).get();
       if (doc.exists) {
         return ListingModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
       }
