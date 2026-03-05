@@ -92,7 +92,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              _buildFilterChip('Cafés', null, provider),
+              _buildFilterChip('All', null, provider),
               ...Category.values.take(5).map(
                     (category) => _buildFilterChip(
                         category.displayName, category, provider),
