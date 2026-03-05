@@ -25,11 +25,11 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: Text(widget.listing.name),
         actions: [
           if (isOwner)
             IconButton(
-              icon: const Icon(Icons.edit),
+              icon: const Icon(Icons.edit_rounded),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -41,6 +41,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
             ),
         ],
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -211,8 +212,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
       icon: const Icon(Icons.directions),
       label: const Text('Get Directions'),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 16),
       ),
     );

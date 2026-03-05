@@ -29,7 +29,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
         title: const Text('Directory'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.add_circle_outline, size: 28),
             onPressed: () {
               Navigator.push(
                 context,
@@ -39,10 +39,11 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
           ),
         ],
       ),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Column(
         children: [
-          _buildSearchBar(),
           _buildCategoryFilter(),
+          _buildSearchBar(),
           Expanded(child: _buildListingsList()),
         ],
       ),
@@ -51,12 +52,13 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
 
   Widget _buildSearchBar() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: TextField(
         controller: _searchController,
         decoration: InputDecoration(
           hintText: 'Search services and places...',
-          prefixIcon: const Icon(Icons.search),
+          hintStyle: TextStyle(color: Colors.grey[400]),
+          prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
                   icon: const Icon(Icons.clear),
@@ -83,17 +85,18 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
   Widget _buildCategoryFilter() {
     return Consumer<ListingProvider>(
       builder: (context, provider, _) {
-        return SizedBox(
-          height: 50,
+        return Container(
+          height: 60,
+          padding: const EdgeInsets.only(top: 12, bottom: 8),
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              _buildFilterChip('All', null, provider),
-              ...Category.values.map(
-                (category) =>
-                    _buildFilterChip(category.displayName, category, provider),
-              ),
+              _buildFilterChip('Cafés', null, provider),
+              ...Category.values.take(5).map(
+                    (category) => _buildFilterChip(
+                        category.displayName, category, provider),
+                  ),
             ],
           ),
         );
@@ -142,29 +145,36 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
           );
         }
 
-        return RefreshIndicator(
-          onRefresh: () async {
-            // Listings are already updating via stream
-            await Future.delayed(const Duration(milliseconds: 500));
-          },
-          child: ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: provider.listings.length,
-            itemBuilder: (context, index) {
-              final listing = provider.listings[index];
-              return ListingCard(
-                listing: listing,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ListingDetailScreen(listing: listing),
-                    ),
-                  );
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await Future.delayed(const Duration(milliseconds: 500));
                 },
-              );
-            },
-          ),
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: provider.listings.length,
+                  itemBuilder: (context, index) {
+                    final listing = provider.listings[index];
+                    return ListingCard(
+                      listing: listing,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                ListingDetailScreen(listing: listing),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

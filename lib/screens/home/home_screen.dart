@@ -54,16 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
             _currentIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Directory'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
+            icon: Icon(Icons.folder_open),
+            label: 'Directory',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
             label: 'My Listings',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map View'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map View',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',

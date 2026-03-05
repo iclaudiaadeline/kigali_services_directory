@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'config/demo_config.dart';
 import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/listing_provider.dart';
@@ -32,30 +31,72 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SettingsProvider()),
       ],
       child: MaterialApp(
-        title: 'Kigali Services Directory',
+        title: 'Kigali City',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: const Color(0xFF1A3F6B), // Dark blue
+          scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF1A3F6B),
+            primary: const Color(0xFF1A3F6B),
+            secondary: const Color(0xFFFFB54C), // Orange accent
+          ),
           useMaterial3: true,
-          appBarTheme: const AppBarTheme(centerTitle: true, elevation: 0),
+          appBarTheme: const AppBarTheme(
+            centerTitle: false,
+            elevation: 0,
+            backgroundColor: Color(0xFF1A3F6B),
+            foregroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25),
+              borderSide: BorderSide.none,
+            ),
             filled: true,
-            fillColor: Colors.grey[50],
+            fillColor: Colors.white,
+            hintStyle: TextStyle(color: Colors.grey[400]),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           ),
           cardTheme: CardThemeData(
-            elevation: 2,
+            elevation: 1,
+            color: Colors.white,
+            surfaceTintColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFFB54C),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              elevation: 0,
+              textStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             ),
+          ),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Color(0xFFFFB54C),
+            foregroundColor: Colors.white,
+          ),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Color(0xFF1A3F6B),
+            selectedItemColor: Color(0xFFFFB54C),
+            unselectedItemColor: Colors.white60,
+            type: BottomNavigationBarType.fixed,
+            elevation: 8,
           ),
         ),
         home: const AuthWrapper(),
