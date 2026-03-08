@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import '../../models/listing_model.dart';
@@ -69,55 +69,34 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   Widget _buildMap() {
-    // Show placeholder on web (Google Maps Flutter doesn't work well on web)
-    if (kIsWeb) {
-      return Container(
-        height: 250,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.map, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
-            Text(
-              'Map View',
-              style: TextStyle(fontSize: 18, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Lat: ${widget.listing.latitude.toStringAsFixed(4)}, Lng: ${widget.listing.longitude.toStringAsFixed(4)}',
-              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-            ),
-          ],
-        ),
-      );
-    }
-
     return SizedBox(
       height: 250,
-      child: GoogleMap(
-        initialCameraPosition: CameraPosition(
-          target: LatLng(widget.listing.latitude, widget.listing.longitude),
-          zoom: 15,
+      child: FlutterMap(
+        options: MapOptions(
+          center: LatLng(widget.listing.latitude, widget.listing.longitude),
+          zoom: 15.0,
         ),
-        markers: {
-          Marker(
-            markerId: MarkerId(widget.listing.id ?? 'listing'),
-            position: LatLng(widget.listing.latitude, widget.listing.longitude),
-            infoWindow: InfoWindow(
-              title: widget.listing.name,
-              snippet: widget.listing.address,
-            ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.example.kigali_services_directory',
           ),
-        },
-        onMapCreated: (controller) {
-          // Map controller ready
-        },
-        myLocationButtonEnabled: true,
-        zoomControlsEnabled: true,
+          MarkerLayer(
+            markers: [
+              Marker(
+                point:
+                    LatLng(widget.listing.latitude, widget.listing.longitude),
+                width: 50,
+                height: 50,
+                child: const Icon(
+                  Icons.location_on,
+                  color: Colors.red,
+                  size: 50,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
