@@ -2,9 +2,9 @@
 
 A comprehensive Flutter mobile application for locating and navigating to essential public services and places in Kigali, Rwanda. Built with Firebase Authentication, Cloud Firestore, Google Maps integration, and clean architecture using Provider state management.
 
-## 📱 Features
+##  Features
 
-### ✅ Implemented Features
+###  Implemented Features
 
 1. **Authentication**
    - Email/password sign up and sign in
@@ -43,7 +43,7 @@ A comprehensive Flutter mobile application for locating and navigating to essent
    - Location-based notification toggle
    - Sign out functionality
 
-## 🏗️ Architecture
+##  Architecture
 
 ### Project Structure
 
@@ -153,7 +153,7 @@ service cloud.firestore {
 }
 ```
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### Prerequisites
 
@@ -312,7 +312,7 @@ flutter build apk --release
 flutter build ios --release
 ```
 
-## 🧪 Testing
+##  Testing
 
 ### Test Credentials
 Create a test account through the app's sign-up screen.
@@ -333,7 +333,7 @@ You can create sample listings with these Kigali locations:
    - Category: Tourist Attraction
    - Coordinates: -1.9441, 30.0619
 
-## 📖 Usage Guide
+##  Usage Guide
 
 ### Creating a Listing
 1. Sign in to your account
@@ -361,7 +361,7 @@ You can create sample listings with these Kigali locations:
 3. Use edit icon or options menu
 4. Confirm deletion when prompted
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 - **Flutter** - UI framework
 - **Firebase Authentication** - User authentication
@@ -371,14 +371,14 @@ You can create sample listings with these Kigali locations:
 - **Geolocator** - Location services
 - **URL Launcher** - External navigation
 
-## 📝 Known Issues & Limitations
+##  Known Issues & Limitations
 
 1. Search is case-insensitive but requires exact substring matches
 2. Location permissions must be granted manually on iOS
 3. App requires internet connection for all functionality
 4. Email verification link expires after 24 hours
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 - [ ] Offline mode with local caching
 - [ ] Image uploads for listings
@@ -387,16 +387,16 @@ You can create sample listings with these Kigali locations:
 - [ ] Multi-language support (Kinyarwanda, French, English)
 - [ ] Advanced search filters (distance, rating, open now)
 
-## 📄 License
+##  License
 
 This project is for educational purposes as part of a mobile development course.
 
-## 👨‍💻 Author
+##  Author
 
 [Your Name]
 [Your Email]
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Firebase for backend infrastructure
 - Google Maps Platform for mapping services
