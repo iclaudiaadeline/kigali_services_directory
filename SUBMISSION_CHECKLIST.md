@@ -187,7 +187,7 @@
 
 ---
 
-### 5. Design Summary Document 📊
+### 5. Design Summary Document 
 
 #### Document Structure
 - [ ] Student name and ID on first page
@@ -220,7 +220,7 @@
 
 ---
 
-### 6. Final PDF Submission 📑
+### 6. Final PDF Submission 
 
 Create a **single PDF** containing all of the following in order:
 
@@ -341,7 +341,7 @@ Before recording demo video, test everything:
 
 ---
 
-## ✅ Pre-Submission Final Check
+##  Pre-Submission Final Check
 
 ### 24 Hours Before Deadline:
 - [ ] All code is complete and pushed to GitHub
@@ -359,7 +359,7 @@ Before recording demo video, test everything:
 
 ---
 
-## 🎯 Grading Alignment
+##  Grading Alignment
 
 Your submission should cover:
 
