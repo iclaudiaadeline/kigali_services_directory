@@ -8,9 +8,9 @@
 
 ---
 
-## 📋 Pre-Submission Checklist
+##  Pre-Submission Checklist
 
-### 1. Code Implementation ✅
+### 1. Code Implementation 
 
 #### Firebase Integration
 - [ ] Firebase project created
@@ -77,7 +77,7 @@
 
 ---
 
-### 2. GitHub Repository 📦
+### 2. GitHub Repository 
 
 #### Repository Setup
 - [ ] Repository created on GitHub
@@ -107,7 +107,7 @@
 
 ---
 
-### 3. Demo Video 🎥
+### 3. Demo Video 
 
 #### Video Requirements
 - [ ] Duration is between 7-12 minutes
@@ -154,7 +154,7 @@
 
 ---
 
-### 4. Implementation Reflection PDF 📄
+### 4. Implementation Reflection PDF 
 
 #### Document Structure
 - [ ] Student name and ID on first page
@@ -262,7 +262,7 @@ Create a **single PDF** containing all of the following in order:
 
 ---
 
-## 🧪 Testing Checklist
+##  Testing Checklist
 
 Before recording demo video, test everything:
 
@@ -296,35 +296,35 @@ Before recording demo video, test everything:
 
 ---
 
-## 🚨 Common Issues to Avoid
+##  Common Issues to Avoid
 
 ### DO NOT:
-- ❌ Commit Firebase config files to Git
-- ❌ Commit API keys to Git
-- ❌ Submit video longer than 12 minutes or shorter than 7 minutes
-- ❌ Skip showing Firebase Console in video
-- ❌ Forget to show code implementation in video
-- ❌ Submit incomplete reflection (needs at least 4 challenges)
-- ❌ Forget to test app before recording
-- ❌ Use test mode Firestore rules in production
-- ❌ Have your app crash during demo video
-- ❌ Rush through video explanation
+-  Commit Firebase config files to Git
+-  Commit API keys to Git
+-  Submit video longer than 12 minutes or shorter than 7 minutes
+-  Skip showing Firebase Console in video
+-  Forget to show code implementation in video
+-  Submit incomplete reflection (needs at least 4 challenges)
+-  Forget to test app before recording
+-  Use test mode Firestore rules in production
+-  Have your app crash during demo video
+-  Rush through video explanation
 
 ### DO:
-- ✅ Test everything before recording
-- ✅ Speak clearly and explain thoroughly
-- ✅ Show Firebase Console for every CRUD operation
-- ✅ Display relevant code sections
-- ✅ Keep video within time limits
-- ✅ Make repository public or share with instructor
-- ✅ Include meaningful commit messages
-- ✅ Test PDF links work before submitting
-- ✅ Proofread all documents
-- ✅ Submit on time!
+-  Test everything before recording
+-  Speak clearly and explain thoroughly
+-  Show Firebase Console for every CRUD operation
+-  Display relevant code sections
+-  Keep video within time limits
+-  Make repository public or share with instructor
+-  Include meaningful commit messages
+-  Test PDF links work before submitting
+-  Proofread all documents
+-  Submit on time!
 
 ---
 
-## 📤 Submission Method
+##  Submission Method
 
 ### Check Your Submission Requirements:
 - Platform: ___________________________
