@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../models/listing_model.dart';
 import '../../models/category.dart';
 import '../../providers/auth_provider.dart';
 import 'edit_listing_screen.dart';
+import '../map/map_view_screen.dart';
 
 class ListingDetailScreen extends StatefulWidget {
   final ListingModel listing;
@@ -18,6 +19,69 @@ class ListingDetailScreen extends StatefulWidget {
 }
 
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
+  LatLng? _currentLocation;
+  double? _distance;
+  int? _estimatedMinutes;
+  bool _loadingLocation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() => _loadingLocation = true);
+
+    try {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() => _loadingLocation = false);
+        return;
+      }
+
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() => _loadingLocation = false);
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() => _loadingLocation = false);
+        return;
+      }
+
+      Position position = await Geolocator.getCurrentPosition();
+
+      setState(() {
+        _currentLocation = LatLng(position.latitude, position.longitude);
+        _calculateRoute();
+        _loadingLocation = false;
+      });
+    } catch (e) {
+      setState(() => _loadingLocation = false);
+    }
+  }
+
+  void _calculateRoute() {
+    if (_currentLocation == null) return;
+
+    final Distance distance = const Distance();
+    final double distanceInMeters = distance.as(
+      LengthUnit.Meter,
+      _currentLocation!,
+      LatLng(widget.listing.latitude, widget.listing.longitude),
+    );
+
+    setState(() {
+      _distance = distanceInMeters / 1000;
+      _estimatedMinutes = ((distanceInMeters / 1000) / 40 * 60).round();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -46,6 +110,31 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (_loadingLocation)
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: const Color(0xFF1A3F6B),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Text(
+                      'Getting your location...',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              )
+            else if (_distance != null && _estimatedMinutes != null)
+              _buildRouteInfo(),
             _buildMap(),
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -69,20 +158,59 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   Widget _buildMap() {
+    List<LatLng> routePoints = [];
+    LatLng centerPoint =
+        LatLng(widget.listing.latitude, widget.listing.longitude);
+    double zoom = 15.0;
+
+    if (_currentLocation != null) {
+      routePoints = [
+        _currentLocation!,
+        LatLng(widget.listing.latitude, widget.listing.longitude),
+      ];
+
+      centerPoint = LatLng(
+        (_currentLocation!.latitude + widget.listing.latitude) / 2,
+        (_currentLocation!.longitude + widget.listing.longitude) / 2,
+      );
+      zoom = 13.0;
+    }
+
     return SizedBox(
       height: 250,
       child: FlutterMap(
         options: MapOptions(
-          center: LatLng(widget.listing.latitude, widget.listing.longitude),
-          zoom: 15.0,
+          center: centerPoint,
+          zoom: zoom,
         ),
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.example.kigali_services_directory',
           ),
+          if (routePoints.isNotEmpty)
+            PolylineLayer(
+              polylines: [
+                Polyline(
+                  points: routePoints,
+                  strokeWidth: 4.0,
+                  color: const Color(0xFF1A3F6B),
+                ),
+              ],
+            ),
           MarkerLayer(
             markers: [
+              if (_currentLocation != null)
+                Marker(
+                  point: _currentLocation!,
+                  width: 40,
+                  height: 40,
+                  child: const Icon(
+                    Icons.my_location,
+                    color: Color(0xFFFFB54C),
+                    size: 40,
+                  ),
+                ),
               Marker(
                 point:
                     LatLng(widget.listing.latitude, widget.listing.longitude),
@@ -98,6 +226,66 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRouteInfo() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A3F6B),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildRouteInfoItem(
+            Icons.straighten,
+            '${_distance!.toStringAsFixed(1)} km',
+            'Distance',
+          ),
+          Container(
+            height: 40,
+            width: 1,
+            color: Colors.white24,
+          ),
+          _buildRouteInfoItem(
+            Icons.access_time,
+            '$_estimatedMinutes min',
+            'Est. Time',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRouteInfoItem(IconData icon, String value, String label) {
+    return Column(
+      children: [
+        Icon(icon, color: const Color(0xFFFFB54C), size: 28),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: 12,
+          ),
+        ),
+      ],
     );
   }
 
@@ -187,7 +375,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
   Widget _buildNavigationButton() {
     return ElevatedButton.icon(
-      onPressed: _launchNavigation,
+      onPressed: _openMapNavigation,
       icon: const Icon(Icons.directions),
       label: const Text('Get Directions'),
       style: ElevatedButton.styleFrom(
@@ -196,22 +384,30 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     );
   }
 
-  Future<void> _launchNavigation() async {
-    final url = Uri.parse(
-      'https://www.google.com/maps/dir/?api=1&destination=${widget.listing.latitude},${widget.listing.longitude}',
-    );
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Could not launch navigation'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+  void _openMapNavigation() {
+    if (_currentLocation == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content:
+              Text('Getting your location... Please try again in a moment'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
     }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MapViewScreen(
+          currentLocation: _currentLocation,
+          destinationLocation: LatLng(
+            widget.listing.latitude,
+            widget.listing.longitude,
+          ),
+          destinationName: widget.listing.name,
+        ),
+      ),
+    );
   }
 }

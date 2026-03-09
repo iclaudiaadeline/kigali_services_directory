@@ -8,7 +8,16 @@ import '../../models/category.dart';
 import '../listings/listing_detail_screen.dart';
 
 class MapViewScreen extends StatefulWidget {
-  const MapViewScreen({super.key});
+  final LatLng? destinationLocation;
+  final LatLng? currentLocation;
+  final String? destinationName;
+
+  const MapViewScreen({
+    super.key,
+    this.destinationLocation,
+    this.currentLocation,
+    this.destinationName,
+  });
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -19,43 +28,52 @@ class _MapViewScreenState extends State<MapViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool showRoute =
+        widget.destinationLocation != null && widget.currentLocation != null;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map View'),
+        title: Text(showRoute
+            ? 'Route to ${widget.destinationName ?? "Destination"}'
+            : 'Map View'),
       ),
-      body: Consumer<ListingProvider>(
-        builder: (context, provider, _) {
-          if (provider.listings.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.map_outlined, size: 64, color: Colors.grey),
-                  SizedBox(height: 16),
-                  Text('No listings available',
-                      style: TextStyle(fontSize: 18, color: Colors.grey)),
-                ],
-              ),
-            );
-          }
+      body: showRoute
+          ? _buildRouteMap()
+          : Consumer<ListingProvider>(
+              builder: (context, provider, _) {
+                if (provider.listings.isEmpty) {
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.map_outlined, size: 64, color: Colors.grey),
+                        SizedBox(height: 16),
+                        Text('No listings available',
+                            style: TextStyle(fontSize: 18, color: Colors.grey)),
+                      ],
+                    ),
+                  );
+                }
 
-          return FlutterMap(
-            options: MapOptions(
-              center: _kigaliCenter,
-              zoom: 12.0,
+                return FlutterMap(
+                  options: MapOptions(
+                    center: _kigaliCenter,
+                    zoom: 12.0,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName:
+                          'com.example.kigali_services_directory',
+                    ),
+                    MarkerLayer(
+                      markers: _buildMarkers(provider.listings),
+                    ),
+                  ],
+                );
+              },
             ),
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.kigali_services_directory',
-              ),
-              MarkerLayer(
-                markers: _buildMarkers(provider.listings),
-              ),
-            ],
-          );
-        },
-      ),
     );
   }
 
@@ -92,5 +110,63 @@ class _MapViewScreenState extends State<MapViewScreen> {
     }
     if (category.contains('Park')) return Colors.green;
     return Colors.purple;
+  }
+
+  Widget _buildRouteMap() {
+    final routePoints = [widget.currentLocation!, widget.destinationLocation!];
+    final centerPoint = LatLng(
+      (widget.currentLocation!.latitude +
+              widget.destinationLocation!.latitude) /
+          2,
+      (widget.currentLocation!.longitude +
+              widget.destinationLocation!.longitude) /
+          2,
+    );
+
+    return FlutterMap(
+      options: MapOptions(
+        center: centerPoint,
+        zoom: 13.0,
+      ),
+      children: [
+        TileLayer(
+          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+          userAgentPackageName: 'com.example.kigali_services_directory',
+        ),
+        PolylineLayer(
+          polylines: [
+            Polyline(
+              points: routePoints,
+              strokeWidth: 4.0,
+              color: const Color(0xFF1A3F6B),
+            ),
+          ],
+        ),
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: widget.currentLocation!,
+              width: 50,
+              height: 50,
+              child: const Icon(
+                Icons.my_location,
+                color: Color(0xFFFFB54C),
+                size: 50,
+              ),
+            ),
+            Marker(
+              point: widget.destinationLocation!,
+              width: 50,
+              height: 50,
+              child: const Icon(
+                Icons.location_on,
+                color: Colors.red,
+                size: 50,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
