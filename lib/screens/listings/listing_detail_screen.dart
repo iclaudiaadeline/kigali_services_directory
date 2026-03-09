@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import '../../models/listing_model.dart';
 import '../../models/category.dart';
 import '../../providers/auth_provider.dart';
@@ -332,15 +333,37 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   Widget _buildInfoSection() {
+    final dateFormatter = DateFormat('MMM dd, yyyy - hh:mm a');
+    final formattedDate = dateFormatter.format(widget.listing.timestamp);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildInfoRow(Icons.phone, 'Contact', widget.listing.contactNumber),
+        _buildInfoRow(
+            Icons.phone, 'Contact Number', widget.listing.contactNumber),
         const SizedBox(height: 16),
         _buildInfoRow(
           Icons.description,
           'Description',
           widget.listing.description,
+        ),
+        const SizedBox(height: 16),
+        _buildInfoRow(
+          Icons.location_on,
+          'Geographic Coordinates',
+          'Lat: ${widget.listing.latitude.toStringAsFixed(6)}, Long: ${widget.listing.longitude.toStringAsFixed(6)}',
+        ),
+        const SizedBox(height: 16),
+        _buildInfoRow(
+          Icons.person,
+          'Created By',
+          widget.listing.createdBy,
+        ),
+        const SizedBox(height: 16),
+        _buildInfoRow(
+          Icons.access_time,
+          'Timestamp',
+          formattedDate,
         ),
       ],
     );
