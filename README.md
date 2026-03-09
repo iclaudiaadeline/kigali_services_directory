@@ -1,9 +1,8 @@
 # Kigali Services Directory
 
-A Flutter mobile application that assists the Kigali residents to locate and navigate to the important community facilities like hospitals, police stations, libraries, restaurants, parks, and tourist attractions.
+A Flutter application that will guide the Kigali residents to find their ways to the key facilities in the community such as hospitals, police stations, libraries, restaurants, parks, and tourist attractions in the community.
 
-The application combines Firebase Authentication, Cloud Firestore, and visualization of location through maps and adheres to a clean architecture and Provider state management.
-
+The application is a combination of Firebase Authentication, Cloud Firestore and maps to visualize location, and follows a clean architecture and Provider state management.
 
 ##  Features
 
@@ -11,34 +10,37 @@ The application combines Firebase Authentication, Cloud Firestore, and visualiza
 1. **Authentication**
   - Registration of email and passwords.
   - Secure login and logout
-  - Verification of emails prior to accessing the app.
+  - confirmation of emails before accessing the application.
   - Firestore User profile.
 
 2. **Location Listings (CRUD)**
-   - Create new service/place listings
+   - Add offerings of new services/places.
    - Read and browse all listings
    - Update your own listings
    - Delete your own listings
    - Real-time Firestore sync
 
-3. **Search & Filtering**
+3.**Search & Filtering**
    - Search listings by name
-   - Filter by category (Hospital, Police Station, Library, Restaurant, Café, Park, Tourist Attraction, Utility Office)
+   - By category (Hospital, Police Station, Library, Restaurant, Café, Park, Tourist Attraction, Utility Office)
    - Dynamic real-time filtering
 
-4. **Google Maps Integration**
-   - Embedded maps on detail pages
-   - Location markers for all listings
+
+4.**Google Maps Integration**
+   - Incorporated detail page maps.
+   - Location indicators of each listing.
    - Map view of all services
-   - Turn-by-turn navigation via Google Maps
+   - Voice guided directions using Google Maps.
    - Current location support
 
+
 5. **Navigation**
-   - Bottom navigation bar with 4 screens:
-     - Directory (Browse all listings)
-     - My Listings (User's created listings)
+   - Bottom menu with 4 screens:
+     - Directory (Search listings)
+     - My Listings (Listings made by User)
      - Map View (All listings on map)
-     - Settings (Profile & preferences)
+     - Settings (Profile and preferences)
+
 
 6. **Settings**
    - User profile display
@@ -103,7 +105,7 @@ This application uses **Provider** for state management with a clear separation 
 6. Provider notifies listeners
 7. UI rebuilds with new data
 
-## 🔥 Firestore Database Structure
+##  Firestore Database Structure
 
 ### Collections
 
@@ -211,14 +213,7 @@ flutter pub get
 
 ### 4. Google Maps API Setup
 
-#### A. Get API Key
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create new project or select existing
-3. Enable these APIs:
-   - Maps SDK for Android
-   - Maps SDK for iOS
-   - Directions API
-4. Create credentials > API Key
+
 5. Restrict key (optional but recommended)
 
 #### B. Configure Android
@@ -327,13 +322,6 @@ You can create sample listings with these Kigali locations:
    - Category: Tourist Attraction
    - Coordinates: -1.9505, 30.0940
 
-2. **King Faisal Hospital**
-   - Category: Hospital
-   - Coordinates: -1.9650, 30.1063
-
-3. **Inema Arts Center**
-   - Category: Tourist Attraction
-   - Coordinates: -1.9441, 30.0619
 
 ##  Usage Guide
 
@@ -380,14 +368,7 @@ You can create sample listings with these Kigali locations:
 3. App requires internet connection for all functionality
 4. Email verification link expires after 24 hours
 
-##  Future Enhancements
 
-- [ ] Offline mode with local caching
-- [ ] Image uploads for listings
-- [ ] Rating and review system
-- [ ] Push notifications for nearby services
-- [ ] Multi-language support (Kinyarwanda, French, English)
-- [ ] Advanced search filters (distance, rating, open now)
 
 ##  License
 
@@ -395,8 +376,8 @@ This project is for educational purposes as part of a mobile development course.
 
 ##  Author
 
-[Your Name]
-[Your Email]
+Adeline Claudia IRADUKUNDA
+a.iradukund3@alustudent.com
 
 ##  Acknowledgments
 
@@ -406,4 +387,3 @@ This project is for educational purposes as part of a mobile development course.
 
 ---
 
-**Note**: Remember to never commit your `google-services.json`, `GoogleService-Info.plist`, or API keys to version control. Add them to `.gitignore`.
