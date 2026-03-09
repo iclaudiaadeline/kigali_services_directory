@@ -1,7 +1,6 @@
 import '../models/listing_model.dart';
 import '../models/category.dart';
 
-/// Mock listings data for demo mode
 List<ListingModel> getMockListings() {
   return [
     ListingModel(

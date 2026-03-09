@@ -1,16 +1,18 @@
 # Kigali Services Directory
 
-A comprehensive Flutter mobile application for locating and navigating to essential public services and places in Kigali, Rwanda. Built with Firebase Authentication, Cloud Firestore, Google Maps integration, and clean architecture using Provider state management.
+A Flutter mobile application that assists the Kigali residents to locate and navigate to the important community facilities like hospitals, police stations, libraries, restaurants, parks, and tourist attractions.
+
+The application combines Firebase Authentication, Cloud Firestore, and visualization of location through maps and adheres to a clean architecture and Provider state management.
+
 
 ##  Features
 
-###  Implemented Features
 
 1. **Authentication**
-   - Email/password sign up and sign in
-   - Email verification enforcement
-   - Secure logout
-   - User profile storage in Firestore
+  - Registration of email and passwords.
+  - Secure login and logout
+  - Verification of emails prior to accessing the app.
+  - Firestore User profile.
 
 2. **Location Listings (CRUD)**
    - Create new service/place listings

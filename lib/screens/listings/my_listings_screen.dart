@@ -71,7 +71,6 @@ class MyListingsScreen extends StatelessWidget {
 
           return RefreshIndicator(
             onRefresh: () async {
-              // Listings are already updating via stream
               await Future.delayed(const Duration(milliseconds: 500));
             },
             child: ListView.builder(

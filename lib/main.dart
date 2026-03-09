@@ -10,8 +10,6 @@ import 'screens/auth/auth_wrapper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase with dummy options for demo mode
-  // In demo mode, Firebase is initialized but not actually used
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -34,12 +32,12 @@ class MyApp extends StatelessWidget {
         title: 'Kigali City',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: const Color(0xFF1A3F6B), // Dark blue
+          primaryColor: const Color(0xFF1A3F6B),
           scaffoldBackgroundColor: const Color(0xFFF5F5F5),
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF1A3F6B),
             primary: const Color(0xFF1A3F6B),
-            secondary: const Color(0xFFFFB54C), // Orange accent
+            secondary: const Color(0xFFFFB54C),
           ),
           useMaterial3: true,
           appBarTheme: const AppBarTheme(

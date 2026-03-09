@@ -15,7 +15,6 @@ class MapViewScreen extends StatefulWidget {
 }
 
 class _MapViewScreenState extends State<MapViewScreen> {
-  // Kigali coordinates
   static const LatLng _kigaliCenter = LatLng(-1.9441, 30.0619);
 
   @override
